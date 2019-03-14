@@ -29,21 +29,19 @@ const register = (req, res) => {
 path.set('/register', register)
 
 
-
 const login = (req, res) => {
   userDao.login(req.body.email, req.body.password, data => {
     userDao.queryUser(req.body.email, result => {
       if (result.length == 0) {
         return res.json({status: '-1', msg: '邮箱不存在, 请重新输入!', code: 'failed'})
       }else if (result.length !== 0) {
-        let email = result[0].email,
-            password = result[0].password
+        let password = result[0].password
         bcrypt.compare(req.body.password, password)
               .then(isMatch => {
                 if (!isMatch) {
-                  return res.json({status: '-1', msg: '密码错误', code: 'failed'})
+                  return res.json({status: '-2', msg: '密码错误', code: 'failed'})
                 }else{
-                  return res.json({status: '1', msg: '登录成功', code: 'success'})
+                  return res.json({status: '1', msg: '登录成功', code: 'success', user: result[0]})
                 }
               })
       }
@@ -52,7 +50,6 @@ const login = (req, res) => {
 }
 
 path.set('/login', login)
-
 
 
 module.exports.path = path

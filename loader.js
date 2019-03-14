@@ -7,7 +7,6 @@ const pathMap = new Map()
 
 const files = fs.readdirSync(globalConf['web_path'])
 
-
 for (let i = 0; i < files.length; i++) {
   let temp = require('./' + globalConf['web_path'] + '/' + files[i])
   if (temp.path) {
@@ -18,5 +17,6 @@ for (let i = 0; i < files.length; i++) {
     controllerSet.push(temp)
   }
 }
+
 
 module.exports = pathMap
